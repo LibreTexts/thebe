@@ -12,6 +12,7 @@ export class ThebeManager extends HTMLManager {
   }
 
   registerWithKernel(kernel) {
+    console.log("registerWithKernel(kernel)");
     if (this._commRegistration) {
       this._commRegistration.dispose();
     }
@@ -23,6 +24,7 @@ export class ThebeManager extends HTMLManager {
   }
 
   display_view(msg, view, options) {
+    console.log("display_view(msg, view, options)");
     const el = options.el;
     return Promise.resolve(view).then((view) => {
       pWidget.Widget.attach(view.pWidget, el);
@@ -34,6 +36,7 @@ export class ThebeManager extends HTMLManager {
   }
 
   loadClass(className, moduleName, moduleVersion) {
+    console.log("loadClass(className, moduleName, moduleVersion)"); 
     if (moduleName === "@jupyter-widgets/output") {
       return Promise.resolve(outputWidgets).then((module) => {
         if (module[className]) {
@@ -50,6 +53,7 @@ export class ThebeManager extends HTMLManager {
   }
 
   callbacks(view) {
+    console.log("callbacks(view)");
     const baseCallbacks = super.callbacks(view);
     return Object.assign({}, baseCallbacks, {
       iopub: { output: (msg) => this._onError.emit(msg) },
@@ -57,6 +61,7 @@ export class ThebeManager extends HTMLManager {
   }
 
   _create_comm(target_name, model_id, data, metadata) {
+    console.log("_create_comm()");
     const comm = this.kernel.createComm(target_name, model_id);
     if (data || metadata) {
       comm.open(data, metadata);
@@ -65,6 +70,7 @@ export class ThebeManager extends HTMLManager {
   }
 
   _get_comm_info() {
+    console.log("_get_comm_info()");
     return this.kernel
       .requestCommInfo({ target: this.comm_target_name })
       .then((reply) => reply.content.comms);
