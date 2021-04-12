@@ -1,0 +1,111 @@
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>thebe widget testing</title>
+
+  <!-- script that allows the line plots to be displayed, otherwise it gives an error -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+
+  <!-- Thebe configuration !-->
+  <script type="text/x-thebe-config">
+    {
+      binderOptions: {
+        repo: "LibreTexts/default-env",
+        ref: "2.3.2",
+        binderUrl: "https://binder.libretexts.org"
+      },
+      kernelOptions: {
+        name: "python3",
+      },
+      requestKernel: true,
+      bootstrap: true,
+    }
+  </script>
+
+  <!-- thebe javascript bundle -->
+  <script src="./lib/index.js"></script>
+
+</head>
+
+<body>
+
+  <!-- source from https://github.com/jupyter-widgets/ipywidgets/blob/master/ipywidgets/widgets/widget_output.py -->
+  <pre data-executable="true" data-language="python">
+import ipywidgets as widgets
+from IPython.display import display
+out = widgets.Output()
+display(out)
+  </pre>
+
+  <pre data-executable="true" data-language="python">
+print('prints to output area')
+  </pre>
+
+  <pre data-executable="true" data-language="python">
+with out:
+    print('prints to output widget1')
+  </pre>
+
+  <pre data-executable="true" data-language="python">
+@out.capture()
+def func():
+    print('prints to output widget2')
+func()
+  </pre>
+
+  <pre data-executable="true" data-language="python">
+import numpy as np
+import matplotlib.pyplot as plt
+from ipywidgets import interact, interactive, fixed, interact_manual
+import ipywidgets as widgets
+
+g = 9.81 #m/s
+
+def inclined_plane_velocity_and_strain_rate(alpha,rho,eta,h): #alpha in degrees, rho in kg/m^3, eta in Pa*s, and y and h in m
+    step = 1
+    y = y = np.arange(0,h+step,step)
+    
+    Velocities = (rho * g * np.sin(np.radians(alpha)) / (2*eta)) * (h**2 - y**2) # m/s velocity
+    Strain_Rate = -(rho * g * np.sin(np.radians(alpha)) * y / (2*eta)) # (1/s) strain rate
+    
+    
+    fig, (ax,ax1) = plt.subplots(1,2,figsize = (15,5))
+    ax.plot(Velocities,y,color = 'red')
+    ax.set_ylabel('Depth (m)')
+    ax.set_xlabel('Velocity (m/s)')
+    ax.set_ylim(0,h+step)
+    ax.invert_yaxis()
+    ax.invert_xaxis()
+    ax.set_xlim(350000,0)
+    ax.set_title('Inclined Plane Flow Velocity vs Depth')
+
+    ax1.plot(Strain_Rate,y)
+    ax1.set_ylabel('Depth (m)')
+    ax1.set_xlabel('Strain Rate (1/s)')
+    ax1.set_title('Inclined Plane Flow Strain Rate vs Depth')
+    ax1.set_ylim(0,h+step)
+    ax1.invert_yaxis()
+
+    plt.show()
+    
+eta = 1e21 # Pa*s
+rho = 3000 # kg / m^3
+
+style = {'description_width': 'initial'}
+layout = {'width': '400px'}
+
+interact(inclined_plane_velocity_and_strain_rate,alpha = widgets.IntSlider(min=0, max=70, step=5, value=10,description = 'Angle of the Plane (degrees)',layout = layout, style=style),rho = fixed(rho),eta=fixed(eta),h = widgets.IntSlider(min=0, max=100, step=5, value=10,description = 'Thickness of the Flow (m)',layout = layout,style=style) )
+  </pre>
+
+  <pre data-executable="true" data-language="python">
+
+  </pre>
+
+  <pre data-executable="true" data-language="python">
+
+  </pre>
+
+</body>
+
+</html>
