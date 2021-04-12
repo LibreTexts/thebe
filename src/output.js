@@ -13,12 +13,14 @@ const OUTPUT_WIDGET_VERSION = outputBase.OUTPUT_WIDGET_VERSION;
 
 export class OutputModel extends outputBase.OutputModel {
   defaults() {
+    console.log("defaults()");
     return Object.assign({}, super.defaults(), {
       msg_id: "",
     });
   }
 
   initialize(attributes, options) {
+    console.log("initialize(attributes, options)");
     super.initialize(attributes, options);
     // The output area model is trusted since widgets are
     // only rendered in trusted contexts.
@@ -63,16 +65,19 @@ export class OutputModel extends outputBase.OutputModel {
   }
 
   clear_output(wait = false) {
+    console.log("clear_output(wait = false)");
     this._outputs.clear(wait);
   }
 
   get outputs() {
+    console.log("get outputs()");
     return this._outputs;
   }
 }
 
 class JupyterPhosphorPanelWidget extends Panel {
   constructor(options) {
+    console.log("constructor(options)");
     const { view } = options;
     delete options.view;
     super(options);
@@ -96,6 +101,7 @@ class JupyterPhosphorPanelWidget extends Panel {
    * This causes the view to be destroyed as well with 'remove'
    */
   dispose() {
+    console.log("dispose()");
     if (this.isDisposed) {
       return;
     }
@@ -109,11 +115,13 @@ class JupyterPhosphorPanelWidget extends Panel {
 
 export class OutputView extends outputBase.OutputView {
   _createElement(tagName) {
+    console.log("_createElement(tagName)");
     this.pWidget = new Panel();
     return this.pWidget.node;
   }
 
   _setElement(el) {
+    console.log("_setElement(el)");
     if (this.el || el !== this.pWidget.node) {
       // Boxes don't allow setting the element beyond the initial creation.
       throw new Error("Cannot reset the DOM element.");
@@ -126,6 +134,7 @@ export class OutputView extends outputBase.OutputView {
    * Called when view is rendered.
    */
   render() {
+    console.log("render() method");
     super.render();
     this._outputView = new OutputArea({
       rendermime: this.model.widget_manager.renderMime,
@@ -139,6 +148,7 @@ export class OutputView extends outputBase.OutputView {
   }
 
   remove() {
+    console.log("remove() method");
     this._outputView.dispose();
     return super.remove();
   }
