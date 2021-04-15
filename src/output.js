@@ -30,6 +30,7 @@ export class OutputModel extends outputBase.OutputModel {
   }
 
   onMsgIdChange() {
+    console.log("onMsgIdChange()");
     if (this._msgHook) {
       this._msgHook.dispose();
     }
@@ -37,6 +38,7 @@ export class OutputModel extends outputBase.OutputModel {
 
     const kernel = this.widget_manager.kernel;
     const msgId = this.get("msg_id");
+    console.log("msgId in onMsgIdChange() func = " + msgId);
     if (kernel && msgId) {
       this._msgHook = kernel.registerMessageHook(msgId, (msg) => {
         this.add(msg);
@@ -46,7 +48,9 @@ export class OutputModel extends outputBase.OutputModel {
   }
 
   add(msg) {
+    console.log("add(msg)");
     const msgType = msg.header.msg_type;
+    console.log("msgType in add(msg) func = " + msgType);
     switch (msgType) {
       case "execute_result":
       case "display_data":
@@ -91,6 +95,7 @@ class JupyterPhosphorPanelWidget extends Panel {
    * the processMessage function like this.
    */
   processMessage(msg) {
+    console.log("processMessage(msg)");
     super.processMessage(msg);
     this._view.processPhosphorMessage(msg);
   }
