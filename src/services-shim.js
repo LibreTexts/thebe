@@ -25,6 +25,7 @@ export class ShimmedComm {
    * Opens a sibling comm in the backend
    */
   open(data, callbacks, metadata, buffers) {
+    console.log("open(data, callbacks, metadata, buffers)");
     const future = this.jsServicesComm.open(data, metadata, buffers);
     this._hookupCallbacks(future, callbacks);
     return future.msg.header.msg_id;
@@ -34,6 +35,8 @@ export class ShimmedComm {
    * Sends a message to the sibling comm in the backend
    */
   send(data, callbacks, metadata, buffers) {
+    console.log("send(data, callbacks, metadata, buffers)");
+    console.log("callbacks = ", callbacks);
     let future = this.jsServicesComm.send(data, metadata, buffers);
     this._hookupCallbacks(future, callbacks);
     return future.msg.header.msg_id;
@@ -43,6 +46,7 @@ export class ShimmedComm {
    * Closes the sibling comm in the backend
    */
   close(data, callbacks, metadata, buffers) {
+    console.log("close(data, callbacks, metadata, buffers)");
     let future = this.jsServicesComm.close(data, metadata, buffers);
     this._hookupCallbacks(future, callbacks);
     return future.msg.header.msg_id;
@@ -52,6 +56,7 @@ export class ShimmedComm {
    * Register a message handler
    */
   on_msg(callback) {
+    console.log("on_msg(callback)");
     this.jsServicesComm.onMsg = callback.bind(this);
   }
 
@@ -59,6 +64,7 @@ export class ShimmedComm {
    * Register a handler for when the comm is closed by the backend
    */
   on_close(callback) {
+    console.log("on_close(callback)");
     this.jsServicesComm.onClose = callback.bind(this);
   }
 
@@ -66,6 +72,7 @@ export class ShimmedComm {
    * Hooks callback object up with @jupyterlab/services IKernelFuture
    */
   _hookupCallbacks(future, callbacks) {
+    console.log("_hookupCallbacks(future, callbacks)");
     if (callbacks) {
       future.onReply = function (msg) {
         if (callbacks.shell && callbacks.shell.reply) {
