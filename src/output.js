@@ -51,6 +51,7 @@ export class OutputModel extends outputBase.OutputModel {
     console.log("add(msg)");
     const msgType = msg.header.msg_type;
     console.log("msgType in add(msg) func = " + msgType);
+    console.log("msg.header.session = " + msg.header.session);
     switch (msgType) {
       case "execute_result":
       case "display_data":
