@@ -38,8 +38,13 @@ export class OutputModel extends outputBase.OutputModel {
 
     const kernel = this.widget_manager.kernel;
     const msgId = this.get("msg_id");
-    console.log("msgId in onMsgIdChange() func = " + msgId);
+    console.log("--- kernel and msgId in onMsgIdChange() func ---");
+    console.log(kernel)
+    console.log(msgId)
     if (kernel && msgId) {
+      console.log("if (kernel && msgId) == True");
+      console.log(kernel);
+      console.log(msgId);
       this._msgHook = kernel.registerMessageHook(msgId, (msg) => {
         this.add(msg);
         return false;
@@ -52,7 +57,7 @@ export class OutputModel extends outputBase.OutputModel {
     const msgType = msg.header.msg_type;
     console.log("msgType in add(msg) func = " + msgType);
     console.log("msg.header.session = " + msg.header.session);
-    console.log("msg.content ---");
+    console.log("--- msg.content ---");
     console.log(msg.content);
     switch (msgType) {
       case "execute_result":
