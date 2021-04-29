@@ -37,6 +37,8 @@ export class ShimmedComm {
   send(data, callbacks, metadata, buffers) {
     console.log("send(data, callbacks, metadata, buffers)");
     console.log("callbacks = ", callbacks);
+    console.log("output = ", callbacks.iopub.output);
+    console.log("status = ", callbacks.iopub.status);
     let future = this.jsServicesComm.send(data, metadata, buffers);
     this._hookupCallbacks(future, callbacks);
     return future.msg.header.msg_id;

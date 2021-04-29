@@ -56,6 +56,15 @@ export class ThebeManager extends HTMLManager {
     console.log("callbacks(view)");
     console.log(view);
     const baseCallbacks = super.callbacks(view);
+
+
+    let temp = Object.assign({}, baseCallbacks, {
+      iopub: { output: (msg) => this._onError.emit(msg) },
+    });
+    console.log("returned from callbacks = ", temp);
+
+
+
     return Object.assign({}, baseCallbacks, {
       iopub: { output: (msg) => this._onError.emit(msg) },
     });
